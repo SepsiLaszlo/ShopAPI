@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: [:show, :update, :destroy, :login]
+
 
   # GET /users
   def index
@@ -10,6 +11,18 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
+    render json: @user
+  end
+
+  # GET /users/current
+  def current
+    render json: current_user
+  end
+
+  # GET /users/1/login
+  def login
+    session[:user_id] = @user.id
+
     render json: @user
   end
 
