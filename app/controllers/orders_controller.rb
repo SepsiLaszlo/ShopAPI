@@ -17,7 +17,7 @@ class OrdersController < ApplicationController
 
     render json: {
       message: 'Order is finalized successfully!',
-      order: @order, order_prodcucts: @order.order_products }
+      order: @order, order_products: @order.order_products }
   end
 
   # GET /orders/current
@@ -26,7 +26,7 @@ class OrdersController < ApplicationController
 
     return render json: { message: 'You currently have no active order!' } if @order.blank?
 
-    render json: { order: @order, order_prodcucts: @order.order_products, total_price: @order.total_price }
+    render json: { order: @order, order_products: @order.order_products, total_price: @order.total_price }
   end
 
   # GET /orders/1
