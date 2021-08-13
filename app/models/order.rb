@@ -3,7 +3,7 @@ class Order < ApplicationRecord
   has_many :order_products
   has_many :products, through: :order_products
 
-  def add(product:, quantity:)
+  def add(product:, quantity: 1)
     raise "Order is already finalized!" if finalized?
 
     OrderProduct.create!(product: product,
@@ -19,6 +19,12 @@ class Order < ApplicationRecord
         product.update!(quantity: product.quantity - ordered_quantity)
       end
       update!(finalized: true)
+    end
+  end
+
+  def total_price
+    order_products.sum do |order_product|
+      order_product.product.price * order_product.quantity
     end
   end
 

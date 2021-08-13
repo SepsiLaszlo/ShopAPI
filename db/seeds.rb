@@ -11,7 +11,7 @@
     User.create!(email: Faker::Internet.email)
 end
 
-1000.times do |number|
+100.times do |number|
     p "Product ##{number + 1} created"
     Product.create!(name: Faker::Appliance.equipment,
                     price: (10..100000).to_a.sample,

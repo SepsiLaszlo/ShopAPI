@@ -1,11 +1,32 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :update, :destroy]
+  before_action :set_order, only: [:show, :update, :destroy,]
 
   # GET /orders
   def index
     @orders = Order.all
 
     render json: @orders
+  end
+
+  # POST /orders/finalize
+  def finalize
+    @order = current_user.active_order
+    return render json: { message: 'You currently have no active order!' } if @order.blank?
+
+    @order.finalize!
+
+    render json: {
+      message: 'Order is finalized successfully!',
+      order: @order, order_prodcucts: @order.order_products }
+  end
+
+  # GET /orders/current
+  def current
+    @order = current_user.active_order
+
+    return render json: { message: 'You currently have no active order!' } if @order.blank?
+
+    render json: { order: @order, order_prodcucts: @order.order_products, total_price: @order.total_price }
   end
 
   # GET /orders/1
@@ -39,13 +60,14 @@ class OrdersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_order
-      @order = Order.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def order_params
-      params.require(:order).permit(:user_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_order
+    @order = Order.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def order_params
+    params.require(:order).permit(:user_id)
+  end
 end
