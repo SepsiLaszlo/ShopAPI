@@ -24,7 +24,7 @@ class Order < ApplicationRecord
 
   def total_price
     order_products.sum do |order_product|
-      order_product.product.price * order_product.quantity
+      order_product.product.price
     end
   end
 
